@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block body %}<div class="top"><h1>My Salary</h1></div>
+<div class="card"><h2>Earnings (monthly)</h2><table>
+{% for l,k in [('Basic','basic_salary'),('HRA','hra'),('Allowances','allowances'),('Bonus','bonus'),('Overtime','overtime')] %}<tr><td>{{ l }}</td><td class="r">{{ inr(user[k]) }}</td></tr>{% endfor %}
+<tr class="tot"><td>Gross salary</td><td class="r">{{ inr(gross) }}</td></tr></table></div>
+<div class="card"><h2>Deductions</h2><table>
+{% for l,k in [('Provident Fund','pf'),('Professional tax','ptax'),('Income tax','itax'),('Insurance','insurance'),('Loan / other','other_ded')] %}<tr><td>{{ l }}</td><td class="r">{{ inr(user[k]) }}</td></tr>{% endfor %}
+<tr class="tot"><td>Total deductions</td><td class="r">{{ inr(ded) }}</td></tr></table></div>
+<div class="stat"><span>Estimated net (full attendance)</span><b>{{ inr(net) if gross else '—' }}</b></div>{% endblock %}

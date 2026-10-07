@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block body %}<h1>Leave</h1>
+{% if user.role=='employee' %}<div class="card"><h2>Apply for leave</h2><form method="post" class="form2">
+<div><label>Type</label><select name="type"><option>Casual</option><option>Sick</option><option>Earned</option><option>Unpaid</option></select></div><div></div>
+<div><label>From</label><input type="date" name="start" required></div><div><label>To</label><input type="date" name="end" required></div>
+<div class="full"><label>Reason</label><textarea name="reason" rows="2"></textarea></div><div class="full"><button>Submit request</button></div></form></div>{% endif %}
+<div class="card"><table><tr>{% if user.role=='admin' %}<th>Employee</th>{% endif %}<th>Type</th><th>From</th><th>To</th><th>Reason</th><th>Status</th><th></th></tr>
+{% for r in rows %}<tr>{% if user.role=='admin' %}<td>{{ r.name }}</td>{% endif %}<td>{{ r.type }}</td><td>{{ r.start }}</td><td>{{ r.end }}</td><td>{{ r.reason }}</td><td><span class="b {{ r.status }}">{{ r.status }}</span></td>
+<td>{% if user.role=='admin' and r.status=='pending' %}<form method="post" action="{{ url_for('decide',kind='leave',rid=r.id) }}" class="inl"><button name="a" value="approved">Approve</button><button name="a" value="rejected" class="ghost">Reject</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7">No leave requests.</td></tr>{% endfor %}</table></div>{% endblock %}

@@ -1,0 +1,3 @@
+<form method="post" action="{{ url_for('mark') }}" class="inl">
+{% if not today %}<button name="a" value="in">Check in</button>{% elif not today.check_out %}<span>Checked in at {{ today.check_in }}</span><button name="a" value="out">Check out</button>{% else %}<span>{{ today.check_in }} – {{ today.check_out }}</span>{% endif %}
+{% if today %}<span class="b {{ today.status }}">{{ today.status }}</span>{% endif %}</form>

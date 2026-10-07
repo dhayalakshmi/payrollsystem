@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PayrollPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head><body>
+{% block shell %}<aside class="side"><div class="logo"><span>₹</span>PayrollPro</div><nav>
+{% set items=[('dashboard','Dashboard'),('employees','Employees'),('attendance','Attendance'),('leave','Leave'),('payslips','Payroll')] if user.role=='admin' else [('dashboard','Dashboard'),('profile','My Details'),('attendance','Attendance'),('leave','Leave'),('salary','My Salary'),('payslips','Payslips')] %}
+{% for e,l in items %}<a href="{{ url_for(e) }}" class="{{ 'on' if request.endpoint==e }}">{{ l }}</a>{% endfor %}</nav>
+<div class="who"><b>{{ user.name or user.email }}</b><small>{{ user.role }}</small><a href="{{ url_for('logout') }}">Sign out</a></div></aside>
+<main>{% with m=get_flashed_messages(with_categories=true) %}{% for c,t in m %}<div class="flash {{c}}">{{t}}</div>{% endfor %}{% endwith %}{% block body %}{% endblock %}</main>{% endblock %}
+</body></html>

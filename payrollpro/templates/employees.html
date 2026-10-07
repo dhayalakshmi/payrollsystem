@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block body %}<div class="top"><h1>Employees</h1></div>
+<form method="get" class="inl" style="margin-bottom:16px"><input name="s" placeholder="Search by name, email or department" value="{{ request.args.get('s','') }}"><button>Search</button></form>
+<div class="card"><table><tr><th>ID</th><th>Name</th><th>Email</th><th>Department</th><th>Designation</th><th class="r">Gross</th><th>Profile</th><th></th></tr>
+{% for e in rows %}<tr><td>{{ empid(e.id) }}</td><td>{{ e.name }}</td><td>{{ e.email }}</td><td>{{ e.department or '—' }}</td><td>{{ e.designation or '—' }}</td><td class="r">{{ inr(gross(e)) }}</td><td><span class="b {{ 'approved' if e.profile_done else 'pending' }}">{{ 'Complete' if e.profile_done else 'Incomplete' }}</span></td><td><a href="{{ url_for('employee',eid=e.id) }}">Open</a></td></tr>
+{% else %}<tr><td colspan="8" class="empty">No employees found.</td></tr>{% endfor %}</table></div>{% endblock %}

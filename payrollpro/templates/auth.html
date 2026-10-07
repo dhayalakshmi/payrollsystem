@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% from 'macros.html' import field %}{% block shell %}
+<div class="screen"><section class="brand"><div class="logo" style="justify-content:center"><span>₹</span>PayrollPro</div>
+<div class="mid"><svg width="170" height="170" viewBox="0 0 170 170" fill="none"><circle cx="85" cy="85" r="76" fill="#fff" stroke="#14807A" stroke-opacity=".25" stroke-width="2"/><rect x="45" y="48" width="80" height="74" rx="8" fill="#fff" stroke="#14807A" stroke-width="3"/><path d="M58 70h54M58 86h54M58 102h30" stroke="#14807A" stroke-width="4" stroke-linecap="round"/><circle cx="122" cy="116" r="20" fill="#14807A"/><text x="122" y="124" font-size="22" fill="#fff" text-anchor="middle" font-weight="700">₹</text></svg>
+<h2>Payroll <span style="color:#14807A">Management</span></h2></div></section>
+<section class="stage"><div class="stub">
+{% if mode=='login' %}<h1>Sign in</h1>{% if err.form %}<div class="flash err">{{ err.form }}</div>{% endif %}
+<form method="post" novalidate>{{ field('Email','email',f.get('email'),err,'email','autofocus') }}{{ field('Password','password','',err,'password') }}<button>Sign in</button></form>
+<p class="alt">Don't have an account? <a href="{{ url_for('register') }}">Create account</a></p>
+{% else %}<h1>Create account</h1>
+<form method="post" novalidate>{{ field('Full name','name',f.get('name'),err,'text','autofocus') }}{{ field('Email','email',f.get('email'),err,'email') }}{{ field('Password','password','',err,'password') }}{% if not err.password %}<small>8+ characters with uppercase, lowercase, number and special character.</small>{% endif %}{{ field('Confirm password','confirm','',err,'password') }}<button>Create account</button></form>
+<p class="alt">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p>{% endif %}
+</div></section></div>{% endblock %}

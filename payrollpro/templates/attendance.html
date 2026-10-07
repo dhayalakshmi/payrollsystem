@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block body %}<div class="top"><h1>{{ 'My Attendance' if user.role=='employee' else 'Attendance' }}</h1></div>
+{% if st %}<div class="grid5">{% for l,v in [('Total working days',st.total),('Present days',st.present),('Absent days',st.absent),('Leave days',st.leave),('Attendance %',st.pct~'%')] %}<div class="stat"><span>{{ l }}</span><b>{{ v }}</b></div>{% endfor %}</div>
+<div class="card"><h2>Today</h2>{% set today=tod %}{% include 'mark.html' %}</div>{% endif %}
+<div class="card"><table><tr>{% if user.role=='admin' %}<th>Employee</th>{% endif %}<th>Date</th><th>In</th><th>Out</th><th>Status</th><th></th></tr>
+{% for r in rows %}<tr>{% if user.role=='admin' %}<td>{{ r.name }}</td>{% endif %}<td>{{ r.date }}</td><td>{{ r.check_in }}</td><td>{{ r.check_out or '—' }}</td><td><span class="b {{ r.status }}">{{ r.status }}</span></td>
+<td>{% if user.role=='admin' and r.status=='pending' %}<form method="post" action="{{ url_for('decide',kind='attendance',rid=r.id) }}" class="inl"><button name="a" value="approved">Approve</button><button name="a" value="rejected" class="ghost">Reject</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6">No records yet.</td></tr>{% endfor %}</table></div>{% endblock %}
