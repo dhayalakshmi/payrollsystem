@@ -1,0 +1,38 @@
+{% extends 'base.html' %}{% from 'macros.html' import field %}{% block shell %}
+<style>
+/* LEFT PANEL ONLY (login/register page) */
+.brand{background:linear-gradient(180deg,#fff 0%,#EEF8F7 55%,#DFF3F1 100%);padding:40px 48px;text-align:center;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.brand .brandtop{position:relative;z-index:2;display:flex;align-items:center;gap:10px;text-align:left}
+.brand .glyph{width:30px;height:30px;background:#14807A;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:Fraunces,serif;font-weight:600;font-size:15px;color:#fff;flex:none}
+.brand .brandtop span{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#14807A}
+.brand .mid{position:relative;z-index:2;flex:1;max-width:420px;width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0}
+.brand .halo{position:relative;width:200px;height:200px;margin-bottom:22px}
+.brand .halo::before{content:"";position:absolute;inset:-110px;background:radial-gradient(circle,rgba(20,128,122,.14) 0%,rgba(20,128,122,0) 70%);z-index:0}
+.brand .halo svg{position:relative;z-index:1;width:100%;height:100%;display:block}
+.brand h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(24px,3vw,30px);line-height:1.15;letter-spacing:.06em;text-transform:uppercase;color:#14807A;margin:0 0 14px}
+.brand .dots{position:relative;width:110px;height:0;border-top:2px dotted rgba(20,128,122,.4);margin:0 auto 16px}
+.brand .dots::after{content:"";position:absolute;left:50%;top:-4px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#14807A}
+.brand p{margin:0;font-size:14.5px;line-height:1.6;color:#4A5C59}
+@media(max-width:860px){.brand{padding:24px;min-height:220px}.brand .mid{padding:30px 0}.brand .halo{width:160px;height:160px}}
+</style>
+<div class="screen"><section class="brand">
+<div class="brandtop"><div class="glyph">P</div><span>Payroll System</span></div>
+<div class="mid"><div class="halo"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<circle cx="100" cy="100" r="92" fill="rgba(20,128,122,0.08)"/>
+<rect x="55" y="42" width="70" height="92" rx="6" fill="#fff" stroke="#14807A" stroke-width="3"/><path d="M105 42L125 62H105Z" fill="#14807A"/>
+<line x1="67" y1="76" x2="112" y2="76" stroke="#14807A" stroke-width="3" stroke-linecap="round"/><line x1="67" y1="88" x2="112" y2="88" stroke="#14807A" stroke-width="3" stroke-linecap="round"/>
+<circle cx="80" cy="112" r="17" fill="#fff" stroke="#14807A" stroke-width="3"/><text x="80" y="118" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="700" fill="#14807A" text-anchor="middle">$</text>
+<rect x="108" y="100" width="42" height="52" rx="5" fill="#fff" stroke="#14807A" stroke-width="3"/><rect x="115" y="107" width="28" height="10" rx="1.5" fill="#14807A"/>
+<g fill="#14807A"><circle cx="119" cy="127" r="2.6"/><circle cx="129" cy="127" r="2.6"/><circle cx="139" cy="127" r="2.6"/><circle cx="119" cy="136" r="2.6"/><circle cx="129" cy="136" r="2.6"/><circle cx="139" cy="136" r="2.6"/><circle cx="119" cy="145" r="2.6"/><circle cx="129" cy="145" r="2.6"/><circle cx="139" cy="145" r="2.6"/></g>
+<g fill="#14807A" opacity=".55"><path d="M42 55h3v-3h2v3h3v2h-3v3h-2v-3h-3z"/><circle cx="150" cy="60" r="2.2"/><circle cx="38" cy="120" r="2"/><circle cx="158" cy="130" r="2.4"/></g></svg></div>
+<h2>Payroll System</h2><div class="dots"></div><p>One record. Every payslip, accounted for.</p></div></section>
+<section class="stage"><div class="stub">
+<div class="tabs2"><a href="{{ url_for('login') }}" class="{{ 'on' if mode=='login' }}">Log in</a><a href="{{ url_for('register') }}" class="{{ 'on' if mode!='login' }}">Register</a></div>
+<div class="sbody">
+{% if mode=='login' %}<small class="eyebrow">Welcome back</small><h1>Log in to the system</h1><p class="sub">Enter your work email and password to reach your dashboard.</p>{% if err.form %}<div class="flash err">{{ err.form }}</div>{% endif %}
+<form method="post" novalidate>{{ field('Work email','email',f.get('email'),err,'email','placeholder="you@company.com" autofocus') }}{{ field('Password','password','',err,'password','placeholder="••••••••"') }}<button>Log in</button></form>
+<p class="alt">No account yet? Use the Register tab above.</p>
+{% else %}<small class="eyebrow">New here</small><h1>Create your account</h1><p class="sub">Register with your work email to reach your dashboard.</p>
+<form method="post" action="{{ url_for('register') }}" novalidate>{{ field('Full name','name',f.get('name'),err,'text','placeholder="Your full name" autofocus') }}{{ field('Work email','email',f.get('email'),err,'email','placeholder="you@company.com"') }}{{ field('Password','password','',err,'password','placeholder="••••••••"') }}{% if not err.password %}<small class="hint">8+ characters with uppercase, lowercase, number and special character.</small>{% endif %}{{ field('Confirm password','confirm','',err,'password','placeholder="••••••••"') }}<button>Create account</button></form>
+<p class="alt">Already registered? Use the Log in tab above.</p>{% endif %}
+</div></div></section></div>{% endblock %}

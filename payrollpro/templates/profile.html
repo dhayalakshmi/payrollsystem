@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% from 'macros.html' import field %}{% block body %}
+<div class="top"><h1>{{ 'My Details' if user.profile_done else 'Complete Your Profile' }}</h1></div>
+<div class="card"><form method="post" class="form2" novalidate>
+{{ field('Full name','name',p.name,err) }}{{ field('Email','email',p.email,{},'text','disabled') }}
+{{ field('Mobile number','phone',p.phone,err,'text','inputmode="numeric" maxlength="10" placeholder="10-digit number"') }}{{ field('Date of birth','dob',p.dob,err,'date') }}
+<div class="full {{ 'bad' if err.address }}"><label>Address</label><textarea name="address" rows="2">{{ p.address or '' }}</textarea>{% if err.address %}<div class="err">{{ err.address }}</div>{% endif %}</div>
+{{ field('Bank account number','bank_acc',p.bank_acc,err,'text','inputmode="numeric" maxlength="18"') }}{{ field('IFSC code','ifsc',p.ifsc,err,'text','maxlength="11" style="text-transform:uppercase" placeholder="e.g. HDFC0001234"') }}
+{{ field('Emergency contact number','emergency',p.emergency,err,'text','inputmode="numeric" maxlength="10"') }}<div></div>
+{{ field('Department','d',p.department or 'Assigned by admin',{},'text','disabled') }}{{ field('Designation','g',p.designation or 'Assigned by admin',{},'text','disabled') }}
+<div class="full"><button>Save details</button></div></form></div>{% endblock %}

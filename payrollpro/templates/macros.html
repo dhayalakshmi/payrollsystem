@@ -1,0 +1,4 @@
+{% macro field(label,name,val,err,type='text',attrs='',full=False) %}
+<div class="{{ 'full' if full }} {{ 'bad' if err.get(name) }}"><label>{{ label }}</label><input type="{{ type }}" name="{{ name }}" value="{{ val or '' }}" {{ attrs|safe }}>{% if err.get(name) %}<div class="err">{{ err[name] }}</div>{% endif %}</div>
+{% endmacro %}
+{% macro tabs(endpoint,cnt,sel) %}<div class="tabs">{% for k,l in [('','All'),('pending','Pending'),('approved','Approved'),('rejected','Rejected')] %}<a href="{{ url_for(endpoint,status=k or None) }}" class="{{ 'on' if (sel or '')==k }}">{{ l }}<em>{{ cnt.get(k or 'all',0) }}</em></a>{% endfor %}</div>{% endmacro %}

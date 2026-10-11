@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block body %}<div class="top"><h1>{{ 'Payroll' if user.role=='admin' else 'My Payslips' }}</h1></div>
+{% if user.role=='admin' %}<div class="card"><div class="bar2"><form method="get" class="inl"><label style="margin:0">Month</label><select name="m" onchange="this.form.submit()" style="width:auto">{% for m in months %}<option value="{{ m }}" {{ 'selected' if m==sel }}>{{ mname(m) }}</option>{% endfor %}</select>{% if months %}<a class="btn ghost2" href="{{ url_for('export',month=sel) }}">Export CSV</a>{% endif %}</form>
+<form method="post" class="inl"><input type="month" name="month" value="{{ month }}" style="width:auto"><button>Generate payroll</button></form></div></div>
+<div class="card"><table><tr><th>Employee</th><th>Department</th><th class="r">Gross</th><th class="r">Deductions</th><th class="r">Loss of pay</th><th class="r">Net pay</th><th></th></tr>
+{% for p in rows %}<tr><td>{{ p.name }}</td><td>{{ p.department or '—' }}</td><td class="r">{{ inr(p.gross) }}</td><td class="r">{{ inr(p.total_ded) }}</td><td class="r">{{ inr(p.lop) }}</td><td class="r"><b>{{ inr(p.net) }}</b></td><td><a href="{{ url_for('payslip',pid=p.id) }}">View</a></td></tr>
+{% else %}<tr><td colspan="7" class="empty">No payslips for this month.</td></tr>{% endfor %}
+{% if rows %}<tr class="tot"><td colspan="2">Total</td><td class="r">{{ inr(tot.gross) }}</td><td class="r">{{ inr(tot.total_ded) }}</td><td class="r">{{ inr(tot.lop) }}</td><td class="r">{{ inr(tot.net) }}</td><td></td></tr>{% endif %}</table></div>
+{% else %}<div class="card"><table><tr><th>Month</th><th class="r">Gross</th><th class="r">Deductions</th><th class="r">Net pay</th><th></th></tr>
+{% for p in rows %}<tr><td>{{ mname(p.month) }}</td><td class="r">{{ inr(p.gross) }}</td><td class="r">{{ inr((p.total_ded or 0)+(p.lop or 0)) }}</td><td class="r"><b>{{ inr(p.net) }}</b></td><td><a href="{{ url_for('payslip',pid=p.id) }}">View / download</a></td></tr>
+{% else %}<tr><td colspan="5" class="empty">No payslips yet.</td></tr>{% endfor %}</table></div>{% endif %}{% endblock %}
