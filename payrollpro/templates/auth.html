@@ -1,0 +1,22 @@
+{% extends 'base.html' %}{% from 'macros.html' import field %}{% block shell %}
+<div class="screen"><section class="brand">
+<div class="brandtop"><div class="glyph">P</div><span>Payroll System</span></div>
+<div class="mid"><div class="halo"><svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<circle cx="100" cy="100" r="92" fill="rgba(20,128,122,0.08)"/>
+<rect x="55" y="42" width="70" height="92" rx="6" fill="#fff" stroke="#14807A" stroke-width="3"/><path d="M105 42L125 62H105Z" fill="#14807A"/>
+<line x1="67" y1="76" x2="112" y2="76" stroke="#14807A" stroke-width="3" stroke-linecap="round"/><line x1="67" y1="88" x2="112" y2="88" stroke="#14807A" stroke-width="3" stroke-linecap="round"/>
+<circle cx="80" cy="112" r="17" fill="#fff" stroke="#14807A" stroke-width="3"/><text x="80" y="118" font-family="IBM Plex Sans, sans-serif" font-size="16" font-weight="700" fill="#14807A" text-anchor="middle">$</text>
+<rect x="108" y="100" width="42" height="52" rx="5" fill="#fff" stroke="#14807A" stroke-width="3"/><rect x="115" y="107" width="28" height="10" rx="1.5" fill="#14807A"/>
+<g fill="#14807A"><circle cx="119" cy="127" r="2.6"/><circle cx="129" cy="127" r="2.6"/><circle cx="139" cy="127" r="2.6"/><circle cx="119" cy="136" r="2.6"/><circle cx="129" cy="136" r="2.6"/><circle cx="139" cy="136" r="2.6"/><circle cx="119" cy="145" r="2.6"/><circle cx="129" cy="145" r="2.6"/><circle cx="139" cy="145" r="2.6"/></g>
+<g fill="#14807A" opacity=".55"><path d="M42 55h3v-3h2v3h3v2h-3v3h-2v-3h-3z"/><circle cx="150" cy="60" r="2.2"/><circle cx="38" cy="120" r="2"/><circle cx="158" cy="130" r="2.4"/></g></svg></div>
+<h2>Payroll System</h2><div class="dots"></div><p>One record. Every payslip, accounted for.</p></div></section>
+<section class="stage"><div class="stub">
+<div class="tabs2"><a href="{{ url_for('login') }}" class="{{ 'on' if mode=='login' }}">Log in</a><a href="{{ url_for('register') }}" class="{{ 'on' if mode!='login' }}">Register</a></div>
+<div class="sbody">
+{% if mode=='login' %}<small class="eyebrow">Welcome back</small><h1>Log in to the system</h1><p class="sub">Enter your work email and password to reach your dashboard.</p>{% if err.form %}<div class="flash err">{{ err.form }}</div>{% endif %}
+<form method="post" novalidate>{{ field('Work email','email',f.get('email'),err,'email','placeholder="you@company.com" autofocus') }}{{ field('Password','password','',err,'password','placeholder="••••••••"') }}<button>Log in</button></form>
+<p class="alt">No account yet? Use the Register tab above.</p>
+{% else %}<small class="eyebrow">New here</small><h1>Create your account</h1><p class="sub">Register with your work email to reach your dashboard.</p>
+<form method="post" action="{{ url_for('register') }}" novalidate>{{ field('Full name','name',f.get('name'),err,'text','placeholder="Your full name" autofocus') }}{{ field('Work email','email',f.get('email'),err,'email','placeholder="you@company.com"') }}{{ field('Password','password','',err,'password','placeholder="••••••••"') }}{% if not err.password %}<small class="hint">8+ characters with uppercase, lowercase, number and special character.</small>{% endif %}{{ field('Confirm password','confirm','',err,'password','placeholder="••••••••"') }}<button>Create account</button></form>
+<p class="alt">Already registered? Use the Log in tab above.</p>{% endif %}
+</div></div></section></div>{% endblock %}
